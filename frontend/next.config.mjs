@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config) => {
+    config.resolve.alias['@'] = new URL('.', import.meta.url).pathname;
+    return config;
+  },
 }
 
-export default nextConfig
+export default nextConfig;
