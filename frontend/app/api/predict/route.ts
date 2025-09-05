@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import type { PredictRequest, PredictResponse } from "@/lib/types"
+import type { PredictRequest, PredictResponse } from "../../../lib/types"
 
 // Mock prediction logic based on symptom patterns
 function generateMockPrediction(request: PredictRequest): PredictResponse {

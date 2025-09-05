@@ -1,13 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import { Settings } from "lucide-react"
 import { useState } from "react"
-import { useSymptomStore } from "@/lib/store"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useSymptomStore } from "../lib/store"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet"
+import { Input } from "../components/ui/input"
+import { Label } from "../components/ui/label"
 
 export function NavBar() {
   const { apiBaseUrl, setApiBaseUrl } = useSymptomStore()

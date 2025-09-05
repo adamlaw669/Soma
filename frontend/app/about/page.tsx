@@ -1,6 +1,6 @@
-import { NavBar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { NavBar } from "../../components/navbar"
+import { Footer } from "../../components/footer"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import { Shield, Users, Stethoscope, AlertTriangle } from "lucide-react"
 
 export default function AboutPage() {

@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { motion, type PanInfo } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import { Badge } from "../components/ui/badge"
 import { Check, X, HelpCircle } from "lucide-react"
-import type { Question } from "@/lib/types"
+import type { Question } from "../lib/types"
 
 interface SymptomCardProps {
   question: Question

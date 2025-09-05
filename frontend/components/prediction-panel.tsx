@@ -1,7 +1,7 @@
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "../components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
 import { AlertTriangle, CheckCircle, Info } from "lucide-react"
-import type { PredictResponse } from "@/lib/types"
+import type { PredictResponse } from "../lib/types"
 
 interface PredictionPanelProps {
   prediction: PredictResponse

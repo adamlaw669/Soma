@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import { ArrowRight, Shield, Zap, Brain } from "lucide-react"
 import { motion } from "framer-motion"
 

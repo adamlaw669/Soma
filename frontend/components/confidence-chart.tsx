@@ -1,8 +1,8 @@
 "use client"
 
-import { Progress } from "@/components/ui/progress"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import type { DistributionItem } from "@/lib/types"
+import { Progress } from "../components/ui/progress"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import type { DistributionItem } from "../lib/types"
 import { useEffect, useState } from "react"
 
 interface ConfidenceChartProps {
