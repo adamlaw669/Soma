@@ -15,7 +15,9 @@ import { useSymptomStore } from "../../lib/store"
 import { predictSymptoms, getDiseaseInfo, logEvent } from "../../lib/api"
 import type { PredictResponse } from "../../lib/types"
 import { RotateCcw, Share2, Calendar, AlertTriangle } from "lucide-react"
-import { useToast } from "../../hooks/use-toast"
+import { useToast } from "@/hooks/use-toast"
+import { ReportModal } from "@/components/report-modal"
+import { ReportView } from "@/components/report-view"
 
 export default function ResultPage() {
   const router = useRouter()
@@ -26,6 +28,8 @@ export default function ResultPage() {
   const [diseaseInfo, setDiseaseInfo] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [report, setReport] = useState<Report | null>(null)
+  const [showReportModal, setShowReportModal] = useState(false)
 
   useEffect(() => {
     if (!session) {
@@ -62,6 +66,23 @@ export default function ResultPage() {
         const labels = result.distribution.slice(0, 3).map((d) => d.label)
         const info = await getDiseaseInfo(labels)
         setDiseaseInfo(info)
+
+        // Generate and persist report
+        const recent = getRecentReportsFromLocal()
+        const gen = await generateReport({
+          predict_response: result,
+          session: {
+            sessionId: session.sessionId,
+            symptoms: session.symptoms,
+            vitals: session.vitals,
+            demographics: session.demographics,
+          },
+          recent_reports: recent,
+        })
+        setReport(gen.report)
+        saveReportToLocalStorage(gen.report)
+        setShowReportModal(true)
+        toast({ title: "Report generated", description: "Sent to a doctor for review." })
       } catch (err) {
         console.error("Prediction error:", err)
         setError(err instanceof Error ? err.message : "Failed to get prediction")
@@ -108,6 +129,8 @@ export default function ResultPage() {
     })
     logEvent("telehealth_booking_attempted")
   }
+
+  const renderReportForModal = () => (report ? <ReportView report={report} /> : <></>)
 
   if (!session) {
     return null // Will redirect
@@ -234,6 +257,13 @@ export default function ResultPage() {
         </div>
       </main>
       <Footer />
+      <ReportModal
+        open={showReportModal}
+        onOpenChange={setShowReportModal}
+        report={report}
+        renderReportView={renderReportForModal}
+        onDownloaded={() => toast({ title: "PDF downloaded" })}
+      />
     </div>
   )
 }
