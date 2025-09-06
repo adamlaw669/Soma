@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ErrorBoundary } from "../components/error-boundary"
 import { Toaster } from "../components/ui/toaster"
+import { ThemeProvider } from "../components/theme-provider"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -44,11 +45,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <ErrorBoundary>
-          <Suspense fallback={null}>{children}</Suspense>
-          <Toaster />
-        </ErrorBoundary>
-        <Analytics />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <ErrorBoundary>
+            <Suspense fallback={null}>{children}</Suspense>
+            <Toaster />
+          </ErrorBoundary>
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )

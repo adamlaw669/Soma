@@ -3,19 +3,13 @@
 import Link from "next/link"
 import { Button } from "../components/ui/button"
 import { Settings } from "lucide-react"
-import { useState } from "react"
-import { useSymptomStore } from "../lib/store"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet"
-import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
+import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group"
+import { useTheme } from "next-themes"
 
 export function NavBar() {
-  const { apiBaseUrl, setApiBaseUrl } = useSymptomStore()
-  const [tempUrl, setTempUrl] = useState(apiBaseUrl || "")
-
-  const handleSaveSettings = () => {
-    setApiBaseUrl(tempUrl || null)
-  }
+  const { theme, setTheme } = useTheme()
 
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -66,16 +60,26 @@ export function NavBar() {
                 </SheetHeader>
                 <div className="grid gap-4 py-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="api-url">API Base URL</Label>
-                    <Input
-                      id="api-url"
-                      placeholder="https://api.example.com"
-                      value={tempUrl}
-                      onChange={(e) => setTempUrl(e.target.value)}
-                    />
-                    <p className="text-xs text-muted-foreground">Leave empty to use mock API</p>
+                    <Label>Theme</Label>
+                    <RadioGroup
+                      value={(theme as string) || "system"}
+                      onValueChange={(v) => setTheme(v as any)}
+                      className="grid grid-cols-3 gap-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem id="theme-light" value="light" />
+                        <Label htmlFor="theme-light">Light</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem id="theme-dark" value="dark" />
+                        <Label htmlFor="theme-dark">Dark</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem id="theme-system" value="system" />
+                        <Label htmlFor="theme-system">System</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
-                  <Button onClick={handleSaveSettings}>Save Settings</Button>
                 </div>
               </SheetContent>
             </Sheet>
