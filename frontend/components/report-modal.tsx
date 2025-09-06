@@ -8,11 +8,12 @@ import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 import type { Report } from "@/lib/types"
 
-export function ReportModal({ open, onOpenChange, report, renderReportView }: {
+export function ReportModal({ open, onOpenChange, report, renderReportView, onDownloaded }: {
   open: boolean
   onOpenChange: (open: boolean) => void
   report: Report | null
   renderReportView: () => JSX.Element
+  onDownloaded?: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -24,6 +25,7 @@ export function ReportModal({ open, onOpenChange, report, renderReportView }: {
     const pageWidth = 190
     pdf.addImage(imgData, "PNG", 10, 10, pageWidth, 0)
     pdf.save(`Soma_Report_${new Date(report.generated_at).toISOString().slice(0,10)}_${report.id}.pdf`)
+    onDownloaded?.()
   }
 
   return (

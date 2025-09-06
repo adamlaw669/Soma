@@ -1,3 +1,16 @@
 {
-  "/page": "app/page.js"
+  "/api/diseases/route": "app/api/diseases/route.js",
+  "/api/predict/route": "app/api/predict/route.js",
+  "/api/reports/[id]/feedback/route": "app/api/reports/[id]/feedback/route.js",
+  "/api/reports/[id]/route": "app/api/reports/[id]/route.js",
+  "/api/reports/generate/route": "app/api/reports/generate/route.js",
+  "/api/reports/route": "app/api/reports/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/check/page": "app/check/page.js",
+  "/doctor/page": "app/doctor/page.js",
+  "/page": "app/page.js",
+  "/report/[id]/page": "app/report/[id]/page.js",
+  "/reports/page": "app/reports/page.js",
+  "/result/page": "app/result/page.js"
 }
