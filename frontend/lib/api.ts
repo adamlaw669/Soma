@@ -90,6 +90,25 @@ export async function getReports(sessionId?: string): Promise<Report[]> {
   return res2.json()
 }
 
+export async function saveReport(payload: Report): Promise<Report> {
+  const url = externalOrInternal(`/reports`)
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+    if (res.ok) return res.json()
+  } catch {}
+  const res2 = await fetch(`/api/reports`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+  if (!res2.ok) throw new Error(`Save report failed: ${res2.statusText}`)
+  return res2.json()
+}
+
 export async function getReport(id: string): Promise<Report> {
   const res = await fetch(externalOrInternal(`/reports/${id}`))
   if (res.ok) return res.json()
