@@ -9,10 +9,10 @@ import { Toaster } from "../components/ui/toaster"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Soma - Fast, Simple, Smart Diagnosis",
+  title: "Soma - From Symptoms to Clarity, Instantly",
   description:
     "AI-powered symptom checker for quick health insights. Not a substitute for professional medical advice.",
-  generator: "v0.app",
+  generator: "Lawal Adam",
   keywords: ["health", "symptoms", "AI", "diagnosis", "medical", "healthcare"],
   authors: [{ name: "Soma Health" }],
   creator: "Soma Health",
