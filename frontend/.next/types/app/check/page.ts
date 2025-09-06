@@ -1,4 +1,4 @@
-// File: /workspace/frontend/app/check/page.tsx
+// File: /Users/mac/Projects/Soma/frontend/app/check/page.tsx
 import * as entry from '../../../../app/check/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,32 +1,17 @@
-<<<<<<< HEAD
 globalThis.__BUILD_MANIFEST = {
   "polyfillFiles": [
     "static/chunks/polyfills.js"
   ],
-  "devFiles": [
-    "static/chunks/fallback/react-refresh.js"
-  ],
-  "ampDevFiles": [
-    "static/chunks/fallback/webpack.js",
-    "static/chunks/fallback/amp.js"
-  ],
+  "devFiles": [],
+  "ampDevFiles": [],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/fallback/webpack.js",
-    "static/chunks/fallback/main-app.js"
+    "static/chunks/webpack.js",
+    "static/chunks/main-app.js"
   ],
   "rootMainFilesTree": {},
   "pages": {
-    "/_app": [
-      "static/chunks/fallback/webpack.js",
-      "static/chunks/fallback/main.js",
-      "static/chunks/fallback/pages/_app.js"
-    ],
-    "/_error": [
-      "static/chunks/fallback/webpack.js",
-      "static/chunks/fallback/main.js",
-      "static/chunks/fallback/pages/_error.js"
-    ]
+    "/_app": []
   },
   "ampFirstPages": []
 };
@@ -35,6 +20,3 @@ globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
 ,"/static/" + process.env.__NEXT_BUILD_ID + "/_ssgManifest.js",
 
 ];
-=======
-globalThis.__BUILD_MANIFEST={polyfillFiles:["static/chunks/polyfills-42372ed130431b0a.js"],devFiles:[],ampDevFiles:[],lowPriorityFiles:[],rootMainFiles:["static/chunks/webpack-f3d4f491aebdc6b7.js","static/chunks/4bd1b696-9940c1e2e6421b88.js","static/chunks/684-df9b3bbfb0be5d1b.js","static/chunks/main-app-6d0c49247b692443.js"],rootMainFilesTree:{},pages:{"/_app":["static/chunks/webpack-f3d4f491aebdc6b7.js","static/chunks/framework-75d8b6119e7601c4.js","static/chunks/main-0185ff22e5862578.js","static/chunks/pages/_app-8e94039938385921.js"],"/_error":["static/chunks/webpack-f3d4f491aebdc6b7.js","static/chunks/framework-75d8b6119e7601c4.js","static/chunks/main-0185ff22e5862578.js","static/chunks/pages/_error-7b2d139042a6a5ab.js"]},ampFirstPages:[]},globalThis.__BUILD_MANIFEST.lowPriorityFiles=["/static/"+process.env.__NEXT_BUILD_ID+"/_buildManifest.js",,"/static/"+process.env.__NEXT_BUILD_ID+"/_ssgManifest.js"];
->>>>>>> 26c35902ad084b6d3ee0c607487be893eaa6ac05

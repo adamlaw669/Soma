@@ -1,4 +1,4 @@
-// File: /workspace/frontend/app/api/reports/generate/route.ts
+// File: /Users/mac/Projects/Soma/frontend/app/api/reports/generate/route.ts
 import * as entry from '../../../../../../app/api/reports/generate/route.js'
 import type { NextRequest } from 'next/server.js'
 
