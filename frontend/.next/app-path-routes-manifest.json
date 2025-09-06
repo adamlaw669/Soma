@@ -1,0 +1,16 @@
+{
+  "/api/diseases/route": "/api/diseases",
+  "/api/predict/route": "/api/predict",
+  "/api/reports/[id]/feedback/route": "/api/reports/[id]/feedback",
+  "/api/reports/[id]/route": "/api/reports/[id]",
+  "/api/reports/route": "/api/reports",
+  "/api/reports/generate/route": "/api/reports/generate",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/check/page": "/check",
+  "/doctor/page": "/doctor",
+  "/page": "/",
+  "/report/[id]/page": "/report/[id]",
+  "/reports/page": "/reports",
+  "/result/page": "/result"
+}
