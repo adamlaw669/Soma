@@ -52,3 +52,43 @@ export interface SymptomSession {
   currentQuestionIndex: number
   isComplete: boolean
 }
+
+// ----------------------
+// Reports
+// ----------------------
+
+export interface ReportDoctorFeedback {
+  doctor_id: string
+  action: "approve" | "reject"
+  corrected_label?: string
+  notes?: string
+}
+
+export interface Report {
+  id: string
+  patient_session_id: string
+  generated_at: string
+  predicted: { label: string; probability: number }
+  distribution: DistributionItem[]
+  triage: "low" | "medium" | "high"
+  advice: string[]
+  explanations?: string[]
+  llm_summary?: string
+  status: "pending" | "reviewed" | "confirmed"
+  doctor_feedback?: ReportDoctorFeedback
+}
+
+export interface GenerateReportRequestBody {
+  predict_response: PredictResponse
+  session: {
+    sessionId: string
+    symptoms: Partial<Record<SymptomKey, boolean>>
+    vitals: { temperature_c?: number }
+    demographics: { age?: number; sex?: "male" | "female" | "unspecified" }
+  }
+  recent_reports?: Array<{ id: string; summary: string; predicted_label: string; generated_at: string }>
+}
+
+export interface GenerateReportResponseBody {
+  report: Report
+}
