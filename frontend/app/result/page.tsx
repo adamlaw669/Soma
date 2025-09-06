@@ -12,12 +12,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Skeleton } from "../../components/ui/skeleton"
 import { Alert, AlertDescription } from "../../components/ui/alert"
 import { useSymptomStore } from "../../lib/store"
-import { predictSymptoms, getDiseaseInfo, logEvent } from "../../lib/api"
-import type { PredictResponse } from "../../lib/types"
+import { predictSymptoms, getDiseaseInfo, logEvent, generateReport, getRecentReportsFromLocal, saveReportToLocalStorage } from "../../lib/api"
+import type { PredictResponse, Report}  from "../../lib/types"
 import { RotateCcw, Share2, Calendar, AlertTriangle } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { ReportModal } from "@/components/report-modal"
-import { ReportView } from "@/components/report-view"
+import { useToast } from "../../hooks/use-toast"
+import { ReportModal } from "../../components/report-modal" 
+import { ReportView } from "../../components/report-view"
 
 export default function ResultPage() {
   const router = useRouter()
