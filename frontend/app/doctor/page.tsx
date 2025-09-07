@@ -4,10 +4,11 @@ import { useEffect, useState } from "react"
 import { NavBar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { DoctorReviewCard } from "@/components/doctor-review-card"
-import { getDiagnoses } from "@/lib/api"
+import { getDiagnoses, submitDoctorReview } from "@/lib/api"
 import type { DoctorDiagnosis } from "@/lib/types"
 import { useToast } from "@/hooks/use-toast"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DoctorDiagnosisCard } from "@/components/doctor-diagnosis-card"
 
@@ -40,7 +41,6 @@ export default function DoctorPage() {
 
   useEffect(() => {
     let data = list.slice()
-    if (priority !== "all") data = data.filter((r) => r.distribution[0] && r.distribution[0].label && r.triage === (priority as any))
     if (q.trim()) {
       const s = q.toLowerCase()
       data = data.filter((r) => r.id.toLowerCase().includes(s) || r.predicted.label.toLowerCase().includes(s))
@@ -48,14 +48,22 @@ export default function DoctorPage() {
     setFiltered(data)
   }, [list, q, priority])
 
-  async function handleSubmit(report: Report, payload: { action: "approve" | "reject"; corrected_label?: string; notes?: string }) {
+  async function handleReview(diagnosis: DoctorDiagnosis, action: "correct" | "incorrect", notes?: string) {
     try {
-      // optimistic update
-      setReports((prev) => prev.filter((r) => r.id !== report.id))
-      await submitFeedback(report.id, { doctor_id: "demo-doctor", action: payload.action, corrected_label: payload.corrected_label, notes: payload.notes })
-      toast({ title: "Feedback saved" })
+      await submitDoctorReview({
+        diagnosis_id: diagnosis.id,
+        action,
+        notes
+      })
+      // Update local state
+      setList(prev => prev.map(d => 
+        d.id === diagnosis.id 
+          ? { ...d, status: "reviewed", review: { action, notes: notes || "", reviewed_at: new Date().toISOString() } }
+          : d
+      ))
+      toast({ title: "Review submitted successfully" })
     } catch (e: any) {
-      toast({ title: "Failed to save feedback", description: e?.message ?? "" })
+      toast({ title: "Failed to submit review", description: e?.message ?? "" })
     }
   }
 
@@ -94,7 +102,7 @@ export default function DoctorPage() {
               </div>
               <div className="space-y-3">
                 {filtered.map((d) => (
-                  <DoctorDiagnosisCard key={d.id} item={d} />
+                  <DoctorDiagnosisCard key={d.id} item={d} onReview={handleReview} />
                 ))}
               </div>
             </>

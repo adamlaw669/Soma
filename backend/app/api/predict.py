@@ -1,14 +1,18 @@
 # app/api/predict.py
 from fastapi import APIRouter, Request, HTTPException, Depends
 from sqlalchemy.orm import Session
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from app.schemas import PredictRequest, PredictResponse, DistributionItem, TopPrediction
 from app.db import get_db
 from app.models.diagnosis import DiagnosisCreate
 from app.services.diagnosis_service import create_diagnosis
 
 router = APIRouter()
+limiter = Limiter(key_func=get_remote_address)
 
 @router.post("/", response_model=PredictResponse)
+@limiter.limit("10/minute")  # Rate limit: 10 predictions per minute per IP
 async def predict_endpoint(req: PredictRequest, request: Request, db: Session = Depends(get_db)):
     predictor = getattr(request.app.state, "predictor", None)
     if predictor is None:

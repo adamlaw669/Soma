@@ -187,24 +187,42 @@ import type { DoctorDiagnosis, DoctorReviewPayload } from "./types"
 
 export async function getDiagnoses(): Promise<DoctorDiagnosis[]> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/diagnoses` : `/api/diagnoses`
-  const res = await fetch(url)
+  const url = baseUrl ? `${baseUrl}/doctor/diagnoses` : `/api/doctor/diagnoses`
+  const res = await fetch(url, {
+    headers: {
+      'x-role': 'doctor'
+    }
+  })
   if (!res.ok) throw new Error(`Get diagnoses failed: ${res.statusText}`)
   return res.json()
 }
 
 export async function getDiagnosis(id: string): Promise<DoctorDiagnosis> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/diagnoses/${id}` : `/api/diagnoses/${id}`
-  const res = await fetch(url)
+  const url = baseUrl ? `${baseUrl}/doctor/diagnosis/${id}` : `/api/doctor/diagnosis/${id}`
+  const res = await fetch(url, {
+    headers: {
+      'x-role': 'doctor'
+    }
+  })
   if (!res.ok) throw new Error(`Get diagnosis failed: ${res.statusText}`)
   return res.json()
 }
 
 export async function submitDoctorReview(payload: DoctorReviewPayload): Promise<DoctorDiagnosis> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/doctor/review` : `/api/doctor/review`
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+  const url = baseUrl ? `${baseUrl}/doctor/review/${payload.diagnosis_id}` : `/api/doctor/review/${payload.diagnosis_id}`
+  const res = await fetch(url, { 
+    method: "POST", 
+    headers: { 
+      "Content-Type": "application/json",
+      "x-role": "doctor"
+    }, 
+    body: JSON.stringify({
+      status: payload.action,
+      feedback: payload.notes
+    })
+  })
   if (!res.ok) throw new Error(`Review failed: ${res.statusText}`)
   return res.json()
 }

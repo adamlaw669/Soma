@@ -38,6 +38,18 @@ export function NavBar() {
               >
                 About
               </Link>
+              <Link
+                href="/history"
+                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                History
+              </Link>
+              <Link
+                href="/contact"
+                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Contact
+              </Link>
             </div>
           </div>
 
