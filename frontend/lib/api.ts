@@ -178,3 +178,33 @@ export function getRecentReportsFromLocal(): Array<{ id: string; summary: string
     .slice(0, 3)
     .map((r) => ({ id: r.id, summary: r.llm_summary ?? "", predicted_label: r.predicted.label, generated_at: r.generated_at }))
 }
+
+// ----------------------
+// Doctor dashboard API
+// ----------------------
+
+import type { DoctorDiagnosis, DoctorReviewPayload } from "./types"
+
+export async function getDiagnoses(): Promise<DoctorDiagnosis[]> {
+  const baseUrl = getApiBaseUrl()
+  const url = baseUrl ? `${baseUrl}/diagnoses` : `/api/diagnoses`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Get diagnoses failed: ${res.statusText}`)
+  return res.json()
+}
+
+export async function getDiagnosis(id: string): Promise<DoctorDiagnosis> {
+  const baseUrl = getApiBaseUrl()
+  const url = baseUrl ? `${baseUrl}/diagnoses/${id}` : `/api/diagnoses/${id}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Get diagnosis failed: ${res.statusText}`)
+  return res.json()
+}
+
+export async function submitDoctorReview(payload: DoctorReviewPayload): Promise<DoctorDiagnosis> {
+  const baseUrl = getApiBaseUrl()
+  const url = baseUrl ? `${baseUrl}/doctor/review` : `/api/doctor/review`
+  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+  if (!res.ok) throw new Error(`Review failed: ${res.statusText}`)
+  return res.json()
+}

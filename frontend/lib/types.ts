@@ -71,6 +71,27 @@ export interface DiagnosisHistoryEntry {
 }
 
 // ----------------------
+// Doctor dashboard types
+// ----------------------
+
+export interface DoctorReviewPayload {
+  diagnosis_id: string
+  action: "correct" | "incorrect"
+  notes?: string
+}
+
+export interface DoctorDiagnosis {
+  id: string
+  user_id?: string
+  created_at: string
+  predicted: { label: string; probability: number }
+  distribution: DistributionItem[]
+  symptoms: Partial<Record<SymptomKey, boolean>>
+  status: "pending" | "reviewed"
+  review?: { action: "correct" | "incorrect"; notes?: string; reviewed_at: string }
+}
+
+// ----------------------
 // Reports
 // ----------------------
 
