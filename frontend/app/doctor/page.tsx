@@ -9,8 +9,10 @@ import type { DoctorDiagnosis } from "@/lib/types"
 import { useToast } from "@/hooks/use-toast"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DoctorDiagnosisCard } from "@/components/doctor-diagnosis-card"
+import { Stethoscope } from "lucide-react"
 
 export default function DoctorPage() {
   const [list, setList] = useState<DoctorDiagnosis[]>([])
@@ -75,11 +77,43 @@ export default function DoctorPage() {
           <h1 className="text-2xl font-bold">Doctor Review</h1>
           {error && <p className="text-sm text-destructive">{error}</p>}
           {!accessOk ? (
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">Enter access code</p>
-              <div className="flex gap-2">
-                <Input value={code} onChange={(e)=>setCode(e.target.value)} placeholder="Access code" />
-                <Button onClick={()=> setAccessOk(code.trim().length > 0)}>Continue</Button>
+            <div className="max-w-md mx-auto">
+              <div className="bg-muted/50 rounded-lg p-6 border border-border">
+                <div className="text-center mb-4">
+                  <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                    <Stethoscope className="w-6 h-6 text-primary" />
+                  </div>
+                  <h2 className="text-lg font-semibold">Doctor Portal Access</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Review AI predictions and provide feedback to improve diagnostic accuracy
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="access-code" className="text-sm font-medium">Access Code</Label>
+                    <Input 
+                      id="access-code"
+                      value={code} 
+                      onChange={(e)=>setCode(e.target.value)} 
+                      placeholder="Enter doctor access code" 
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={()=> setAccessOk(code.trim().length > 0)} 
+                    className="w-full"
+                    disabled={!code.trim()}
+                  >
+                    Access Portal
+                  </Button>
+                  
+                  <div className="text-xs text-muted-foreground text-center">
+                    <p>For demo purposes, any non-empty code will work.</p>
+                    <p>Contact your administrator for production access credentials.</p>
+                  </div>
+                </div>
               </div>
             </div>
           ) : loading ? (

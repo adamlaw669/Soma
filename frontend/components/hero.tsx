@@ -120,6 +120,28 @@ export function Hero() {
                 ))}
               </div>
             </motion.div>
+
+            {/* Doctor Portal CTA */}
+            <motion.div
+              className="mt-16 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
+            >
+              <div className="bg-muted/50 rounded-lg p-6 border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Are you a healthcare professional?</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Access the doctor portal to review AI predictions and provide feedback to improve our system.
+                </p>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button asChild variant="outline" className="bg-transparent">
+                    <Link href="/doctor">
+                      Access Doctor Portal
+                    </Link>
+                  </Button>
+                </motion.div>
+              </div>
+            </motion.div>
           </main>
         </div>
       </div>
