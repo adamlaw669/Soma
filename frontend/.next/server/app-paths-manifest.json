@@ -1,6 +1,9 @@
 {
+<<<<<<< HEAD
   "/check/page": "app/check/page.js",
   "/result/page": "app/result/page.js",
   "/doctor/page": "app/doctor/page.js",
+=======
+>>>>>>> d0a4f3b14e6428358aaa416b0589d5c78a7d6940
   "/page": "app/page.js"
 }
