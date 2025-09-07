@@ -14,7 +14,8 @@ from app.db import Base
 
 class DoctorReviewStatus(str, PyEnum):
     pending = "pending"
-    reviewed = "reviewed"
+    correct = "correct"
+    incorrect = "incorrect"
 
 
 class Diagnosis(Base):
