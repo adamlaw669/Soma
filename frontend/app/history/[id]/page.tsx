@@ -8,6 +8,8 @@ import { useSymptomStore } from "@/lib/store"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 import { Button } from "@/components/ui/button"
+import { generateReport } from "@/lib/report"
+import { Download, FileText } from "lucide-react"
 
 export default function HistoryDetailPage() {
   const params = useParams<{ id: string }>()
@@ -24,6 +26,19 @@ export default function HistoryDetailPage() {
     pdf.save(`Soma_History_${entry.id}.pdf`)
   }
 
+  async function downloadReport() {
+    if (!entry) return
+    try {
+      await generateReport({ 
+        diagnosis: entry,
+        // Doctor review data would be fetched here if available
+        doctorReview: undefined
+      })
+    } catch (error) {
+      console.error("Failed to generate report:", error)
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
@@ -35,7 +50,16 @@ export default function HistoryDetailPage() {
             <>
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Detailed Report</h1>
-                <Button onClick={downloadPdf}>Download PDF</Button>
+                <div className="flex gap-2">
+                  <Button onClick={downloadReport} variant="default">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Download Report
+                  </Button>
+                  <Button onClick={downloadPdf} variant="outline">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Screenshot
+                  </Button>
+                </div>
               </div>
               <div ref={ref} className="rounded-xl border bg-card p-4 space-y-4">
                 <div className="flex items-center justify-between text-sm">
