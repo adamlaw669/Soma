@@ -126,13 +126,7 @@ export function SymptomCard({ question, onAnswer, className }: SymptomCardProps)
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button onClick={() => onAnswer(true)} className="h-12 text-base w-full glow-emerald" variant="default">
-                  <Check className="mr-2 h-4 w-4" />
-                  Yes
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
                   onClick={() => onAnswer(false)}
                   className="h-12 text-base w-full border-secondary text-secondary hover:bg-secondary/10"
@@ -140,6 +134,12 @@ export function SymptomCard({ question, onAnswer, className }: SymptomCardProps)
                 >
                   <X className="mr-2 h-4 w-4" />
                   No
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button onClick={() => onAnswer(true)} className="h-12 text-base w-full glow-emerald" variant="default">
+                  <Check className="mr-2 h-4 w-4" />
+                  Yes
                 </Button>
               </motion.div>
             </div>
