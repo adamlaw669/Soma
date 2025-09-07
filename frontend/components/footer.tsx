@@ -30,6 +30,11 @@ export function Footer() {
                   About
                 </Link>
               </li>
+              <li>
+                <Link href="/doctor" className="text-sm text-muted-foreground hover:text-foreground">
+                  Doctor Portal
+                </Link>
+              </li>
             </ul>
           </div>
 
