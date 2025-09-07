@@ -162,18 +162,6 @@ export function SymptomCard({ question, onAnswer, className }: SymptomCardProps)
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="flex items-center justify-center space-x-4">
-          <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-            Y = Yes
-          </Badge>
-          <Badge variant="outline" className="text-xs border-secondary/30 text-secondary">
-            N = No
-          </Badge>
-          <Badge variant="outline" className="text-xs border-muted-foreground/30">
-            S = Skip
-          </Badge>
-        </div>
-        <p className="mt-2">Use keyboard shortcuts or swipe left/right</p>
       </motion.div>
     </div>
   )
