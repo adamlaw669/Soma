@@ -9,3 +9,4 @@ numpy==2.3.2
 joblib==1.5.2
 shap==0.41.0
 #boto3==1.26.0  # if using S3
+reportlab==4.2.5
