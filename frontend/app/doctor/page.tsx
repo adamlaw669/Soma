@@ -4,16 +4,16 @@ import { useEffect, useState } from "react"
 import { NavBar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { DoctorReviewCard } from "@/components/doctor-review-card"
-import { getPendingReports, submitFeedback } from "@/lib/api"
-import type { Report } from "@/lib/types"
+import { getDiagnoses } from "@/lib/api"
+import type { DoctorDiagnosis } from "@/lib/types"
 import { useToast } from "@/hooks/use-toast"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { DoctorDiagnosisCard } from "@/components/doctor-diagnosis-card"
 
 export default function DoctorPage() {
-  const [reports, setReports] = useState<Report[]>([])
-  const [filtered, setFiltered] = useState<Report[]>([])
+  const [list, setList] = useState<DoctorDiagnosis[]>([])
+  const [filtered, setFiltered] = useState<DoctorDiagnosis[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
@@ -27,10 +27,10 @@ export default function DoctorPage() {
       try {
         setLoading(true)
         setError(null)
-        const res = await getPendingReports()
-        setReports(res)
+        const res = await getDiagnoses()
+        setList(res)
       } catch (e: any) {
-        setError(e?.message ?? "Failed to load pending reports")
+        setError(e?.message ?? "Failed to load diagnoses")
       } finally {
         setLoading(false)
       }
@@ -39,14 +39,14 @@ export default function DoctorPage() {
   }, [])
 
   useEffect(() => {
-    let data = reports.slice()
-    if (priority !== "all") data = data.filter((r) => r.triage === (priority as any))
+    let data = list.slice()
+    if (priority !== "all") data = data.filter((r) => r.distribution[0] && r.distribution[0].label && r.triage === (priority as any))
     if (q.trim()) {
       const s = q.toLowerCase()
       data = data.filter((r) => r.id.toLowerCase().includes(s) || r.predicted.label.toLowerCase().includes(s))
     }
     setFiltered(data)
-  }, [reports, q, priority])
+  }, [list, q, priority])
 
   async function handleSubmit(report: Report, payload: { action: "approve" | "reject"; corrected_label?: string; notes?: string }) {
     try {
@@ -76,7 +76,7 @@ export default function DoctorPage() {
             </div>
           ) : loading ? (
             <p className="text-sm text-muted-foreground">Loading...</p>
-          ) : reports.length === 0 ? (
+          ) : list.length === 0 ? (
             <p className="text-sm text-muted-foreground">No pending reports.</p>
           ) : (
             <>
@@ -93,8 +93,8 @@ export default function DoctorPage() {
                 </Select>
               </div>
               <div className="space-y-3">
-                {filtered.map((r) => (
-                  <DoctorReviewCard key={r.id} report={r} onSubmit={(p) => handleSubmit(r, p)} />
+                {filtered.map((d) => (
+                  <DoctorDiagnosisCard key={d.id} item={d} />
                 ))}
               </div>
             </>
