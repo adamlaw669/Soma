@@ -1,6 +1,7 @@
 pydantic
 fastapi==0.95.2
 uvicorn[standard]==0.22.0
+SQLAlchemy==2.0.34
 scikit-learn==1.7.1
 xgboost==1.7.6
 pandas==2.3.2
