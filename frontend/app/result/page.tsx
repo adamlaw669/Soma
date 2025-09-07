@@ -22,7 +22,7 @@ import { ReportView } from "../../components/report-view"
 export default function ResultPage() {
   const router = useRouter()
   const { toast } = useToast()
-  const { session, resetSession } = useSymptomStore()
+  const { session, resetSession, addDiagnosisToHistory } = useSymptomStore()
 
   const [prediction, setPrediction] = useState<PredictResponse | null>(null)
   const [diseaseInfo, setDiseaseInfo] = useState<any>(null)
@@ -83,6 +83,9 @@ export default function ResultPage() {
         saveReportToLocalStorage(gen.report)
         setShowReportModal(true)
         toast({ title: "Report generated", description: "Sent to a doctor for review." })
+
+        // Save diagnosis to local history (Zustand + persisted)
+        addDiagnosisToHistory(result)
       } catch (err) {
         console.error("Prediction error:", err)
         setError(err instanceof Error ? err.message : "Failed to get prediction")
