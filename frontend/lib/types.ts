@@ -54,6 +54,23 @@ export interface SymptomSession {
 }
 
 // ----------------------
+// Diagnosis history
+// ----------------------
+
+export interface DiagnosisHistoryEntry {
+  id: string
+  created_at: string
+  session_id: string
+  top_label: string
+  top_probability: number
+  top3: DistributionItem[]
+  symptoms: Partial<Record<SymptomKey, boolean>>
+  full_distribution: DistributionItem[]
+  triage: "low" | "medium" | "high"
+  status?: "pending" | "reviewed" | "confirmed"
+}
+
+// ----------------------
 // Reports
 // ----------------------
 

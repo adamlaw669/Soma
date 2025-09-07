@@ -1,10 +1,11 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import type { SymptomSession, SymptomKey } from "./types"
+import type { SymptomSession, SymptomKey, DiagnosisHistoryEntry, PredictResponse } from "./types"
 
 interface SymptomStore {
   session: SymptomSession | null
   apiBaseUrl: string | null
+  history: DiagnosisHistoryEntry[]
 
   // Actions
   initSession: () => void
@@ -14,6 +15,7 @@ interface SymptomStore {
   nextQuestion: () => void
   resetSession: () => void
   setApiBaseUrl: (url: string | null) => void
+  addDiagnosisToHistory: (prediction: PredictResponse) => DiagnosisHistoryEntry | null
 }
 
 const generateSessionId = (): string => {
@@ -25,6 +27,7 @@ export const useSymptomStore = create<SymptomStore>()(
     (set, get) => ({
       session: null,
       apiBaseUrl: null,
+      history: [],
 
       initSession: () => {
         set({
@@ -105,12 +108,33 @@ export const useSymptomStore = create<SymptomStore>()(
       setApiBaseUrl: (url: string | null) => {
         set({ apiBaseUrl: url })
       },
+
+      addDiagnosisToHistory: (prediction) => {
+        const session = get().session
+        if (!session) return null
+        const top3 = prediction.distribution.slice(0, 3)
+        const entry: DiagnosisHistoryEntry = {
+          id: `${session.sessionId}-${Date.now()}`,
+          created_at: new Date().toISOString(),
+          session_id: session.sessionId,
+          top_label: prediction.top_prediction.label,
+          top_probability: prediction.top_prediction.probability,
+          top3,
+          symptoms: session.symptoms,
+          full_distribution: prediction.distribution,
+          triage: prediction.triage,
+          status: "pending",
+        }
+        set((state) => ({ history: [...state.history, entry] }))
+        return entry
+      },
     }),
     {
       name: "soma-session",
       partialize: (state) => ({
         session: state.session,
         apiBaseUrl: state.apiBaseUrl,
+        history: state.history,
       }),
     },
   ),
