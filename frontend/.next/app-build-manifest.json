@@ -16,40 +16,25 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
-    "/check/page": [
+    "/about/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/check/page.js"
+      "static/chunks/app/about/page.js"
     ],
-    "/result/page": [
+    "/contact/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/result/page.js"
+      "static/chunks/app/contact/page.js"
     ],
-    "/api/reports/generate/route": [
+    "/privacy/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/reports/generate/route.js"
+      "static/chunks/app/privacy/page.js"
     ],
-    "/reports/page": [
+    "/terms/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/reports/page.js"
-    ],
-    "/api/reports/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/reports/route.js"
-    ],
-    "/report/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/report/[id]/page.js"
-    ],
-    "/api/reports/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/reports/[id]/route.js"
+      "static/chunks/app/terms/page.js"
     ]
   }
 }
