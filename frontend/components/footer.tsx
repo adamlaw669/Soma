@@ -30,6 +30,11 @@ export function Footer() {
                   About
                 </Link>
               </li>
+              <li>
+                <Link href="/doctor" className="text-sm text-muted-foreground hover:text-foreground">
+                  Doctor Portal
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -37,13 +42,18 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-foreground">Legal</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">
+                <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">
+                <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
                   Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
+                  Contact
                 </Link>
               </li>
             </ul>
