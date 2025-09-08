@@ -8,6 +8,8 @@ from app.api import doctor
 from app.api import report
 from app.api import diagnoses
 from app.services.predictor import Predictor
+cursor/generate-downloadable-patient-diagnosis-reports-1180
+from app.config import MODEL_PATH
 from app.db import Base, engine
 
 # Initialize rate limiter
@@ -55,11 +57,12 @@ async def load_predictor():
     Base.metadata.create_all(bind=engine)
     # path should match where you placed the joblib artifact
     try:
-        app.state.predictor = Predictor("/workspace/backend/app/models/soma_model_v1.joblib")
-        print("Predictor loaded successfully.")
+
+        app.state.predictor = Predictor(MODEL_PATH)
+        print(f"Predictor loaded successfully from: {MODEL_PATH}")
     except Exception as e:
         # keep the app up but warn; your /predict will return 503 until loaded
-        print("Failed to load predictor on startup:", e)
+        print(f"Failed to load predictor on startup from {MODEL_PATH}:", e)
         app.state.predictor = None
 
 @app.get("/")
