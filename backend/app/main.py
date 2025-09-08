@@ -49,7 +49,7 @@ app.include_router(predict.router, prefix="/predict", tags=["Prediction"])
 app.include_router(diseases.router, prefix="/diseases", tags=["Diseases"])
 app.include_router(diagnoses.router, prefix="/diagnoses", tags=["Diagnoses"])
 app.include_router(doctor.router, prefix="/doctor", tags=["Doctor"])
-app.include_router(report.router, prefix="/report", tags=["Report"])
+app.include_router(report.router, prefix="/reports", tags=["Reports"])
 
 @app.on_event("startup")
 async def load_predictor():
