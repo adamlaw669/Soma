@@ -8,7 +8,6 @@ from app.api import doctor
 from app.api import report
 from app.api import diagnoses
 from app.services.predictor import Predictor
-cursor/generate-downloadable-patient-diagnosis-reports-1180
 from app.config import MODEL_PATH
 from app.db import Base, engine
 
