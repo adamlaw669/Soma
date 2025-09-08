@@ -2,7 +2,7 @@
 
 > **From symptoms to clarity — instantly**
 
-Soma is an AI-powered symptom checker that predicts likely illnesses from patient-reported symptoms, presents probability distributions with confidence scores, stores diagnosis reports, and supports a comprehensive doctor review workflow. Built for the AltSchool Hackathon 2024.
+Soma is an AI-powered symptom checker that predicts likely illnesses from patient-reported symptoms, presents probability distributions with confidence scores, stores diagnosis reports, and supports a comprehensive doctor review workflow. Built for the AltSchool Hackathon 2025.
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
@@ -253,7 +253,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 
 ## 👥 Team
 
-**Built by the Soma Health Team for AltSchool Hackathon 2024:**
+**Built by the Soma Health Team for AltSchool Hackathon 2025:**
 
 - **Adam Lawal** - Founder & CEO
 - **Mujeeb Rahman** - Co-founder & CTO  
@@ -261,7 +261,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 
 ## 🎯 Hackathon Context
 
-### AltSchool Hackathon 2024
+### AltSchool Hackathon 2025
 - **Category**: Healthcare Technology
 - **Problem**: Limited access to quality healthcare guidance in Nigeria
 - **Solution**: AI-powered symptom checker with doctor oversight
@@ -323,7 +323,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 **Soma provides informational guidance only and is not a substitute for professional medical advice, diagnosis, or treatment.** Always consult a qualified healthcare provider for medical concerns. In case of emergency, contact emergency services immediately.
 
 ### Hackathon Context
-This project was built for the AltSchool Hackathon 2024 and serves as a demonstration of AI-powered healthcare technology. While built with production-quality standards, it should not be used for actual medical decisions.
+This project was built for the AltSchool Hackathon 2025 and serves as a demonstration of AI-powered healthcare technology. While built with production-quality standards, it should not be used for actual medical decisions.
 
 ## 📄 License
 
