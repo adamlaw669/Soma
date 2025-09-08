@@ -85,7 +85,7 @@ export default function AboutPage() {
               make informed health decisions.
             </p>
             <div className="mt-4 space-y-1 text-sm text-muted-foreground">
-              <p>Email: support@soma-health.com</p>
+              <p>Email: adamlawal669@gmail.com</p>
               <p>Emergency: Always call your local emergency services</p>
             </div>
           </div>

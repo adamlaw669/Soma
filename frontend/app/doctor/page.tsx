@@ -110,7 +110,7 @@ export default function DoctorPage() {
                   </Button>
                   
                   <div className="text-xs text-muted-foreground text-center">
-                    <p>For demo purposes, any non-empty code will work.</p>
+                    <p>Enter your access code to view your reports.</p>
                     <p>Contact your administrator for production access credentials.</p>
                   </div>
                 </div>

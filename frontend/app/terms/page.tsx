@@ -124,9 +124,9 @@ export default function TermsPage() {
               <p className="text-muted-foreground">
                 If you have questions about these Terms, please contact us at:
                 <br />
-                Email: legal@soma-health.com
+                Email: adamlawal669@gmail.com
                 <br />
-                Address: 123 Health Street, Medical City, MC 12345
+                Address: 13 Health Street, Medical City, MC 12345
               </p>
             </section>
           </div>

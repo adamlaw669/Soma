@@ -7,7 +7,7 @@ export default function ContactPage() {
       <NavBar />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
+          <h1 className="text-3xl font-bold mb-6">Contact Developers</h1>
           
           <div className="space-y-6">
             <section>
@@ -21,9 +21,9 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold mb-2">Contact Information</h3>
                 <div className="space-y-2 text-sm">
-                  <p><strong>Email:</strong> support@soma-health.com</p>
-                  <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-                  <p><strong>Address:</strong> 123 Health Street, Medical City, MC 12345</p>
+                  <p><strong>Email:</strong> adamlawal669@gmail.com</p>
+                  <p><strong>Phone:</strong> +234 (904) 807-9535</p>
+                  <p><strong>Address:</strong> 13 Health Street, Medical City, MC 12345</p>
                 </div>
               </div>
 

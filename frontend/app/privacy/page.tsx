@@ -95,9 +95,9 @@ export default function PrivacyPage() {
               <p className="text-muted-foreground">
                 If you have questions about this Privacy Policy, please contact us at:
                 <br />
-                Email: privacy@soma-health.com
+                Email: adamlawal669@gmail.com
                 <br />
-                Address: 123 Health Street, Medical City, MC 12345
+                Address: 13 Health Street, Medical City, MC 12345
               </p>
             </section>
 

@@ -5,7 +5,7 @@ import os
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "sqlite:////workspace/backend/app/soma.db",
+    "sqlite:////tmp/soma.db",
 )
 
 

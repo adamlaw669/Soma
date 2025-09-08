@@ -187,7 +187,7 @@ import type { DoctorDiagnosis, DoctorReviewPayload } from "./types"
 
 export async function getDiagnoses(): Promise<DoctorDiagnosis[]> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/doctor/diagnoses` : `/api/doctor/diagnoses`
+  const url = baseUrl ? `${baseUrl}/diagnoses` : `/api/diagnoses`
   const res = await fetch(url, {
     headers: {
       'x-role': 'doctor'
@@ -199,7 +199,7 @@ export async function getDiagnoses(): Promise<DoctorDiagnosis[]> {
 
 export async function getDiagnosis(id: string): Promise<DoctorDiagnosis> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/doctor/diagnosis/${id}` : `/api/doctor/diagnosis/${id}`
+  const url = baseUrl ? `${baseUrl}/diagnosis/${id}` : `/api/diagnosis/${id}`
   const res = await fetch(url, {
     headers: {
       'x-role': 'doctor'
