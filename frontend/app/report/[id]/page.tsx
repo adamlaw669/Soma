@@ -38,7 +38,32 @@ export default function ReportDetailPage() {
   }, [params?.id])
 
   async function downloadPdf() {
-    if (!ref.current || !report) return
+    if (!report) return
+    
+    // Try to download from backend PDF endpoint first
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+    if (baseUrl) {
+      try {
+        const response = await fetch(`${baseUrl}/report/${report.id}/pdf`)
+        if (response.ok) {
+          const blob = await response.blob()
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `Soma_Report_${new Date(report.generated_at).toISOString().slice(0,10)}_${report.id}.pdf`
+          document.body.appendChild(a)
+          a.click()
+          window.URL.revokeObjectURL(url)
+          document.body.removeChild(a)
+          return
+        }
+      } catch (error) {
+        console.warn('Backend PDF download failed, falling back to HTML canvas:', error)
+      }
+    }
+    
+    // Fallback to HTML canvas conversion
+    if (!ref.current) return
     const canvas = await html2canvas(ref.current)
     const imgData = canvas.toDataURL("image/png")
     const pdf = new jsPDF("p", "mm", "a4")

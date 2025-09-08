@@ -7,12 +7,18 @@ import type {
 } from "./types"
 
 const getApiBaseUrl = (): string => {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || ""
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL
+  if (!url) {
+    console.warn('NEXT_PUBLIC_API_BASE_URL is not set. API calls will use fallback routes.')
+    return ""
+  }
+  // Ensure no trailing slash
+  return url.endsWith('/') ? url.slice(0, -1) : url
 }
 
 export const predictSymptoms = async (request: PredictRequest): Promise<PredictResponse> => {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/predict` : "/api/predict"
+  const url = baseUrl ? `${baseUrl}/predict/` : "/api/predict"
 
   const response = await fetch(url, {
     method: "POST",
@@ -32,7 +38,7 @@ export const predictSymptoms = async (request: PredictRequest): Promise<PredictR
 export const getDiseaseInfo = async (labels: string[]): Promise<Record<string, any>> => {
   const baseUrl = getApiBaseUrl()
   const params = new URLSearchParams({ labels: labels.join(",") })
-  const url = baseUrl ? `${baseUrl}/diseases?${params}` : `/api/diseases?${params}`
+  const url = baseUrl ? `${baseUrl}/diseases/?${params}` : `/api/diseases?${params}`
 
   const response = await fetch(url)
 
@@ -64,7 +70,7 @@ export async function generateReport(payload: GenerateReportRequestBody): Promis
   // Try external
   if (getApiBaseUrl()) {
     try {
-      const res = await fetch(externalOrInternal(`/reports/generate`), {
+      const res = await fetch(externalOrInternal(`/report/generate`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -82,7 +88,11 @@ export async function generateReport(payload: GenerateReportRequestBody): Promis
 }
 
 export async function getReports(sessionId?: string): Promise<Report[]> {
-  const url = externalOrInternal(`/reports${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ""}`)
+  // For user history, we need to call the diagnoses endpoint with user_id
+  // Since we don't have a proper user system, we'll use session_id or "anonymous"
+  const userId = sessionId || "anonymous"
+  const baseUrl = getApiBaseUrl()
+  const url = baseUrl ? `${baseUrl}/diagnoses/${userId}` : `/api/reports${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ""}`
   const res = await fetch(url)
   if (res.ok) return res.json()
   const res2 = await fetch(`/api/reports${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ""}`)
@@ -110,7 +120,9 @@ export async function saveReport(payload: Report): Promise<Report> {
 }
 
 export async function getReport(id: string): Promise<Report> {
-  const res = await fetch(externalOrInternal(`/reports/${id}`))
+  const baseUrl = getApiBaseUrl()
+  const url = baseUrl ? `${baseUrl}/report/${id}` : `/api/reports/${id}`
+  const res = await fetch(url)
   if (res.ok) return res.json()
   const res2 = await fetch(`/api/reports/${id}`)
   if (!res2.ok) throw new Error(`Get report failed: ${res2.statusText}`)
