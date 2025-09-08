@@ -1,4 +1,4 @@
-# 🩺 Soma - AI Symptom Checker
+# Soma - AI Symptom Checker
 
 > **From symptoms to clarity — instantly**
 
@@ -10,32 +10,32 @@ Soma is an AI-powered symptom checker that predicts likely illnesses from patien
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 🚀 Live Demo
+## Live Demo
 
-**🌐 Frontend**: [https://somahealth.vercel.app](https://somahealth.vercel.app)  
-**🔧 API Documentation**: [Backend API Docs](https://soma-6c1p.onrender.com/docs)
+**Frontend**: [https://somahealth.vercel.app](https://somahealth.vercel.app)  
+**API Documentation**: [Backend API Docs](https://soma-6c1p.onrender.com/docs)
 
-## ✨ Key Features
+##  Key Features
 
-### 🏥 For Patients
+### For Patients
 - **AI Symptom Analysis**: Input symptoms and get AI-powered predictions in under 3 minutes
 - **Confidence Scoring**: Transparent probability distributions for each potential diagnosis
 - **Downloadable Reports**: PDF reports you can share with healthcare providers
 - **Medical History**: Secure storage and tracking of your health assessments
 
-### 👩‍⚕️ For Healthcare Professionals
+### For Healthcare Professionals
 - **Doctor Review Dashboard**: Review and validate AI predictions
 - **Clinical Oversight**: Approve, correct, or add insights to AI diagnoses
 - **Continuous Learning**: Your feedback improves the AI model over time
 - **Efficient Workflow**: Streamlined interface for quick case reviews
 
-### 🏥 For Healthcare Organizations
+### For Healthcare Organizations
 - **Population Health Insights**: Regional analytics and outbreak detection
 - **EMR Integration**: Compatible with major hospital systems
 - **API Access**: RESTful APIs for custom healthcare integrations
 - **Compliance Ready**: Built with healthcare data privacy in mind
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **Framework**: Next.js 14 (App Router)
@@ -58,7 +58,7 @@ Soma is an AI-powered symptom checker that predicts likely illnesses from patien
 - **Database**: PostgreSQL (cloud)
 - **File Storage**: Secure report generation
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 soma/
@@ -82,7 +82,7 @@ soma/
 └── README.md              # This file
 ```
 
-## 🚦 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - **Node.js** 18+ and npm
@@ -116,7 +116,7 @@ npm run dev
 - **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/docs
 
-## 🔬 How Soma Works
+##  How Soma Works
 
 ### Patient Flow
 1. **Symptom Input** (`/check`) - Interactive questionnaire about symptoms
@@ -137,7 +137,7 @@ npm run dev
 3. **Confidence Scoring** - Transparent uncertainty quantification
 4. **Continuous Learning** - Model retraining with doctor feedback
 
-## 📊 API Documentation
+##  API Documentation
 
 ### Core Endpoints
 
@@ -174,7 +174,7 @@ Accept: application/pdf
 
 Full API documentation available at `/docs` when backend is running.
 
-## 🧪 Development
+##  Development
 
 ### Running Tests
 ```bash
@@ -203,7 +203,7 @@ cd backend
 alembic upgrade head
 ```
 
-## 🚀 Deployment
+##  Deployment
 
 ### Frontend (Vercel)
 1. Connect GitHub repository to Vercel
@@ -233,7 +233,7 @@ SECRET_KEY=your-secret-key-here
 CORS_ORIGINS=["http://localhost:3000"]
 ```
 
-## 🏥 Healthcare Compliance
+##  Healthcare Compliance
 
 ### Data Privacy
 - **Encryption**: All health data encrypted in transit and at rest
@@ -251,7 +251,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 - **Nigerian Compliance**: Built for Nigerian healthcare context
 - **International Standards**: Follows global best practices for health tech
 
-## 👥 Team
+##  Team
 
 **Built by the Soma Health Team for AltSchool Hackathon 2025:**
 
@@ -259,7 +259,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 - **Mujeeb Rahman** - Co-founder & CTO  
 - **Dr. Joanna Adebayo** - Chief Medical Officer
 
-## 🎯 Hackathon Context
+##  Hackathon Context
 
 ### AltSchool Hackathon 2025
 - **Category**: Healthcare Technology
@@ -272,7 +272,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 2. **Doctor Workflow**: Review queue → Case validation → Feedback submission
 3. **Population Health**: Regional analytics and outbreak detection
 
-## 📈 Performance & Metrics
+##  Performance & Metrics
 
 ### Technical Metrics
 - **Response Time**: < 2 seconds for symptom analysis
@@ -286,7 +286,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 - **Doctor Engagement**: Review completion rates
 - **Clinical Accuracy**: Validated by medical professionals
 
-## 🔒 Security
+##  Security
 
 ### Data Protection
 - **Encryption**: TLS 1.3 for data in transit, AES-256 for data at rest
@@ -300,7 +300,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 - **CORS**: Properly configured cross-origin resource sharing
 - **Error Handling**: Secure error messages without information leakage
 
-## 📞 Support & Contact
+##  Support & Contact
 
 ### For Developers
 - **Documentation**: Check `/docs` endpoint when backend is running
@@ -317,7 +317,7 @@ CORS_ORIGINS=["http://localhost:3000"]
 - **Demo**: Available via the live website
 - **Feedback**: We welcome all feedback and suggestions
 
-## ⚠️ Important Disclaimers
+##  Important Disclaimers
 
 ### Medical Disclaimer
 **Soma provides informational guidance only and is not a substitute for professional medical advice, diagnosis, or treatment.** Always consult a qualified healthcare provider for medical concerns. In case of emergency, contact emergency services immediately.
@@ -325,11 +325,11 @@ CORS_ORIGINS=["http://localhost:3000"]
 ### Hackathon Context
 This project was built for the AltSchool Hackathon 2025 and serves as a demonstration of AI-powered healthcare technology. While built with production-quality standards, it should not be used for actual medical decisions.
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **AltSchool Africa** for the hackathon opportunity
 - **Healthcare Professionals** who provided medical guidance
