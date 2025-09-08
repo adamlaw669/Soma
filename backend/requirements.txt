@@ -1,10 +1,13 @@
 pydantic
 fastapi==0.95.2
 uvicorn[standard]==0.22.0
-scikit-learn==1.7.1
+scikit-learn==1.5.1
 xgboost==1.7.6
-pandas==2.3.2
-numpy==2.3.2
+pandas==2.2.2
+numpy==1.26.4
 joblib==1.5.2
 shap==0.41.0
 #boto3==1.26.0  # if using S3
+
+# Ensure matplotlib doesn't use any GUI backend that might require SQLite
+matplotlib==3.7.2

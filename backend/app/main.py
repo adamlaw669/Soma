@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import predict, diseases
 from app.services.predictor import Predictor
+from app.config import MODEL_PATH
 
 app = FastAPI(
     title="Soma API",
@@ -26,11 +27,11 @@ app.include_router(diseases.router, prefix="/diseases", tags=["Diseases"])
 async def load_predictor():
     # path should match where you placed the joblib artifact
     try:
-        app.state.predictor = Predictor("/Users/mac/Projects/Soma/backend/app/models/soma_model_v1.joblib")
-        print("Predictor loaded successfully.")
+        app.state.predictor = Predictor(MODEL_PATH)
+        print(f"Predictor loaded successfully from: {MODEL_PATH}")
     except Exception as e:
         # keep the app up but warn; your /predict will return 503 until loaded
-        print("Failed to load predictor on startup:", e)
+        print(f"Failed to load predictor on startup from {MODEL_PATH}:", e)
         app.state.predictor = None
 
 @app.get("/")
