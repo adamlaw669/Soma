@@ -12,8 +12,8 @@ Soma is an AI-powered symptom checker that predicts likely illnesses from patien
 
 ## 🚀 Live Demo
 
-**🌐 Frontend**: [https://soma-health.vercel.app](https://soma-health.vercel.app)  
-**🔧 API Documentation**: [Backend API Docs](https://api.soma-health.com/docs)
+**🌐 Frontend**: [https://somahealth.vercel.app](https://somahealth.vercel.app)  
+**🔧 API Documentation**: [Backend API Docs](https://soma-6c1p.onrender.com/docs)
 
 ## ✨ Key Features
 
