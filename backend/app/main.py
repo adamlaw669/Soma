@@ -27,7 +27,7 @@ import os
 # Security: Configure CORS based on environment
 allowed_origins = [
     "http://localhost:3000",  # Development frontend
-    "https://soma-health.vercel.app",  # Production frontend
+    "https://somahealth.vercel.app",  # Production frontend
 ]
 
 # Allow additional origins from environment variable
