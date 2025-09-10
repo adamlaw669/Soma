@@ -12,7 +12,7 @@ router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
 @router.post("/", response_model=PredictResponse)
-@limiter.limit("10/minute")  # Rate limit: 10 predictions per minute per IP
+# @limiter.limit("10/minute")  # Temporarily disabled for debugging
 async def predict_endpoint(req: PredictRequest, request: Request, db: Session = Depends(get_db)):
     predictor = getattr(request.app.state, "predictor", None)
     if predictor is None:

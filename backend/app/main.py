@@ -35,12 +35,18 @@ if "ALLOWED_ORIGINS" in os.environ:
     additional_origins = os.environ["ALLOWED_ORIGINS"].split(",")
     allowed_origins.extend([origin.strip() for origin in additional_origins])
 
+# Temporarily allow all origins for debugging CORS issues
+# TODO: Remove this and use specific origins in production
+allowed_origins = ["*"]
+
+print(f"CORS allowed origins: {allowed_origins}")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type", "Authorization", "x-role"],
+    allow_credentials=False,  # Set to False when using wildcard origins
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],  # Allow all headers for debugging
 )
 
 # Routers
@@ -67,3 +73,18 @@ async def load_predictor():
 @app.get("/")
 async def root():
     return {"message": "Welcome to Soma API"}
+
+# Add explicit OPTIONS handlers for problematic endpoints
+@app.options("/predict")
+async def predict_options():
+    return {"message": "OK"}
+
+@app.options("/diagnoses/{user_id}")
+async def diagnoses_options(user_id: str):
+    return {"message": "OK"}
+
+# Redirect non-trailing slash to trailing slash for predict
+@app.post("/predict")
+async def predict_redirect():
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/predict/", status_code=307)
