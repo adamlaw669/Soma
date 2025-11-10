@@ -112,7 +112,7 @@ npm run dev
 ```
 
 ### 4. Access Application
-- **Frontend**: http://localhost:3000
+- **Frontend**: [http://localhost:3000](https://somahealth.vercel.app/)
 - **Backend API**: [http://localhost:8000](https://soma-6c1p.onrender.com/)
 - **API Docs**: [http://localhost:8000/docs](https://soma-6c1p.onrender.com/docs)
 
