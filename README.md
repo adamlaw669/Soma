@@ -113,8 +113,8 @@ npm run dev
 
 ### 4. Access Application
 - **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Docs**: http://localhost:8000/docs
+- **Backend API**: [http://localhost:8000](https://soma-6c1p.onrender.com/)
+- **API Docs**: [http://localhost:8000/docs](https://soma-6c1p.onrender.com/docs)
 
 ##  How Soma Works
 
