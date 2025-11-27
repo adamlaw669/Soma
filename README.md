@@ -338,6 +338,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ for better healthcare accessibility in Nigeria and West Africa**
+**Built for better healthcare accessibility in Nigeria and West Africa**
 
 *For questions about this project, please contact the development team or create an issue in the repository.*
