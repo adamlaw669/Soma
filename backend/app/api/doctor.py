@@ -1,6 +1,7 @@
+import os
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Header, Query
+from fastapi import APIRouter, Depends, HTTPException, Header
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -15,12 +16,15 @@ from app.services.doctor_service import (
 
 router = APIRouter()
 
+_DOCTOR_API_KEY = os.environ.get("DOCTOR_API_KEY", "")
 
-def require_doctor(
-    x_role: Optional[str] = Header(None, alias="x-role"), role: Optional[str] = Query(None)
-):
-    if (x_role or role) != "doctor":
-        raise HTTPException(status_code=403, detail="Doctor access required")
+
+def require_doctor(authorization: Optional[str] = Header(None)):
+    if not _DOCTOR_API_KEY:
+        raise HTTPException(status_code=503, detail="Doctor access not configured on this server")
+    scheme, _, token = (authorization or "").partition(" ")
+    if scheme.lower() != "bearer" or token != _DOCTOR_API_KEY:
+        raise HTTPException(status_code=403, detail="Invalid doctor credentials")
 
 
 class ReviewRequest(BaseModel):
@@ -54,4 +58,3 @@ def review(
     if not updated:
         raise HTTPException(status_code=404, detail="Diagnosis not found")
     return updated
-

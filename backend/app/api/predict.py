@@ -1,18 +1,22 @@
-# app/api/predict.py
+import logging
+
 from fastapi import APIRouter, Request, HTTPException, Depends
 from sqlalchemy.orm import Session
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+
 from app.schemas import PredictRequest, PredictResponse, DistributionItem, TopPrediction
 from app.db import get_db
 from app.models.diagnosis import DiagnosisCreate
 from app.services.diagnosis_service import create_diagnosis
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
+
 @router.post("/", response_model=PredictResponse)
-# @limiter.limit("10/minute")  # Temporarily disabled for debugging
+@limiter.limit("10/minute")
 async def predict_endpoint(req: PredictRequest, request: Request, db: Session = Depends(get_db)):
     predictor = getattr(request.app.state, "predictor", None)
     if predictor is None:
@@ -20,7 +24,6 @@ async def predict_endpoint(req: PredictRequest, request: Request, db: Session = 
     try:
         result = predictor.predict(req)
 
-        # Persist diagnosis
         top_label = result["top_prediction"]["label"] if isinstance(result["top_prediction"], dict) else result["top_prediction"].label
         distribution_list = result["distribution"]
 
@@ -35,9 +38,11 @@ async def predict_endpoint(req: PredictRequest, request: Request, db: Session = 
         try:
             create_diagnosis(db, diagnosis_payload)
         except Exception:
-            # Do not block the response if persistence fails
-            pass
+            logger.exception("Failed to persist diagnosis")
 
         return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except HTTPException:
+        raise
+    except Exception:
+        logger.exception("Prediction failed")
+        raise HTTPException(status_code=500, detail="Prediction failed. Please try again.")

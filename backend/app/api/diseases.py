@@ -81,4 +81,4 @@ async def get_disease_info(labels: str = Query(..., description="Comma-separated
     )
 }
 
-    return [db[label] for label in labels if label in db]
+    return [db[label] for label in label_list if label in db]
