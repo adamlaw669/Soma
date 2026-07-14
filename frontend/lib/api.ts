@@ -4,17 +4,46 @@ import type {
   GenerateReportRequestBody,
   GenerateReportResponseBody,
   Report,
+  DoctorDiagnosis,
+  DoctorReviewPayload,
 } from "./types"
 
 const getApiBaseUrl = (): string => {
   const url = process.env.NEXT_PUBLIC_API_BASE_URL
   if (!url) {
-    console.warn('NEXT_PUBLIC_API_BASE_URL is not set. API calls will use fallback routes.')
+    console.warn("NEXT_PUBLIC_API_BASE_URL is not set. API calls will use fallback routes.")
     return ""
   }
-  // Ensure no trailing slash
-  return url.endsWith('/') ? url.slice(0, -1) : url
+  return url.endsWith("/") ? url.slice(0, -1) : url
 }
+
+// ----------------------
+// Doctor auth helpers
+// ----------------------
+
+const DOCTOR_KEY_STORAGE = "soma-doctor-key"
+
+export function setDoctorApiKey(key: string) {
+  if (typeof window !== "undefined") sessionStorage.setItem(DOCTOR_KEY_STORAGE, key)
+}
+
+export function getDoctorApiKey(): string {
+  if (typeof window === "undefined") return ""
+  return sessionStorage.getItem(DOCTOR_KEY_STORAGE) ?? ""
+}
+
+export function clearDoctorApiKey() {
+  if (typeof window !== "undefined") sessionStorage.removeItem(DOCTOR_KEY_STORAGE)
+}
+
+function doctorAuthHeaders(): Record<string, string> {
+  const key = getDoctorApiKey()
+  return key ? { Authorization: `Bearer ${key}` } : {}
+}
+
+// ----------------------
+// Prediction
+// ----------------------
 
 export const predictSymptoms = async (request: PredictRequest): Promise<PredictResponse> => {
   const baseUrl = getApiBaseUrl()
@@ -22,9 +51,7 @@ export const predictSymptoms = async (request: PredictRequest): Promise<PredictR
 
   const response = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(request),
   })
 
@@ -49,16 +76,18 @@ export const getDiseaseInfo = async (labels: string[]): Promise<Record<string, a
   return response.json()
 }
 
-// Analytics/telemetry helpers
+// ----------------------
+// Analytics
+// ----------------------
+
 export const logEvent = (event: string, data?: Record<string, any>) => {
   if (typeof window !== "undefined") {
     console.log(`[Soma Analytics] ${event}:`, data)
-    // In production, this would send to your analytics service
   }
 }
 
 // ----------------------
-// Reports (external-first, fallback to internal mocks)
+// Reports
 // ----------------------
 
 const externalOrInternal = (path: string) => {
@@ -67,7 +96,6 @@ const externalOrInternal = (path: string) => {
 }
 
 export async function generateReport(payload: GenerateReportRequestBody): Promise<GenerateReportResponseBody> {
-  // Try external
   if (getApiBaseUrl()) {
     try {
       const res = await fetch(externalOrInternal(`/report/generate`), {
@@ -88,11 +116,11 @@ export async function generateReport(payload: GenerateReportRequestBody): Promis
 }
 
 export async function getReports(sessionId?: string): Promise<Report[]> {
-  // For user history, we need to call the diagnoses endpoint with user_id
-  // Since we don't have a proper user system, we'll use session_id or "anonymous"
   const userId = sessionId || "anonymous"
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/diagnoses/${userId}` : `/api/reports${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ""}`
+  const url = baseUrl
+    ? `${baseUrl}/diagnoses/${userId}`
+    : `/api/reports${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ""}`
   const res = await fetch(url)
   if (res.ok) return res.json()
   const res2 = await fetch(`/api/reports${sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : ""}`)
@@ -101,9 +129,8 @@ export async function getReports(sessionId?: string): Promise<Report[]> {
 }
 
 export async function saveReport(payload: Report): Promise<Report> {
-  const url = externalOrInternal(`/reports`)
   try {
-    const res = await fetch(url, {
+    const res = await fetch(externalOrInternal(`/reports`), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -143,21 +170,25 @@ export async function submitFeedback(
 ): Promise<Report> {
   const res = await fetch(externalOrInternal(`/reports/${reportId}/feedback`), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...doctorAuthHeaders() },
     body: JSON.stringify(body),
   })
   if (res.ok) return res.json()
   const res2 = await fetch(`/api/reports/${reportId}/feedback`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...doctorAuthHeaders() },
     body: JSON.stringify(body),
   })
   if (!res2.ok) throw new Error(`Feedback failed: ${res2.statusText}`)
   return res2.json()
 }
 
-// Local cache helpers for recent reports context
+// ----------------------
+// Local report cache
+// ----------------------
+
 const LS_KEY = "soma-reports"
+
 export function saveReportToLocalStorage(report: Report) {
   try {
     if (typeof window === "undefined") return
@@ -182,59 +213,54 @@ export function findReportInLocalStorage(id: string): Report | undefined {
   return getReportsFromLocalStorage().find((r) => r.id === id)
 }
 
-export function getRecentReportsFromLocal(): Array<{ id: string; summary: string; predicted_label: string; generated_at: string }> {
-  const arr = getReportsFromLocalStorage()
-  return arr
+export function getRecentReportsFromLocal(): Array<{
+  id: string
+  summary: string
+  predicted_label: string
+  generated_at: string
+}> {
+  return getReportsFromLocalStorage()
     .slice(-5)
     .reverse()
     .slice(0, 3)
-    .map((r) => ({ id: r.id, summary: r.llm_summary ?? "", predicted_label: r.predicted.label, generated_at: r.generated_at }))
+    .map((r) => ({
+      id: r.id,
+      summary: r.llm_summary ?? "",
+      predicted_label: r.predicted.label,
+      generated_at: r.generated_at,
+    }))
 }
 
 // ----------------------
 // Doctor dashboard API
 // ----------------------
 
-import type { DoctorDiagnosis, DoctorReviewPayload } from "./types"
-
 export async function getDiagnoses(): Promise<DoctorDiagnosis[]> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/diagnoses` : `/api/diagnoses`
-  const res = await fetch(url, {
-    headers: {
-      'x-role': 'doctor'
-    }
-  })
-  if (!res.ok) throw new Error(`Get diagnoses failed: ${res.statusText}`)
+  const url = baseUrl ? `${baseUrl}/doctor/diagnoses` : `/api/diagnoses`
+  const res = await fetch(url, { headers: doctorAuthHeaders() })
+  if (!res.ok) throw new Error(`Get diagnoses failed: ${res.status}`)
   return res.json()
 }
 
 export async function getDiagnosis(id: string): Promise<DoctorDiagnosis> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/diagnosis/${id}` : `/api/diagnosis/${id}`
-  const res = await fetch(url, {
-    headers: {
-      'x-role': 'doctor'
-    }
-  })
-  if (!res.ok) throw new Error(`Get diagnosis failed: ${res.statusText}`)
+  const url = baseUrl ? `${baseUrl}/doctor/diagnosis/${id}` : `/api/diagnoses/${id}`
+  const res = await fetch(url, { headers: doctorAuthHeaders() })
+  if (!res.ok) throw new Error(`Get diagnosis failed: ${res.status}`)
   return res.json()
 }
 
 export async function submitDoctorReview(payload: DoctorReviewPayload): Promise<DoctorDiagnosis> {
   const baseUrl = getApiBaseUrl()
-  const url = baseUrl ? `${baseUrl}/doctor/review/${payload.diagnosis_id}` : `/api/doctor/review/${payload.diagnosis_id}`
-  const res = await fetch(url, { 
-    method: "POST", 
-    headers: { 
-      "Content-Type": "application/json",
-      "x-role": "doctor"
-    }, 
-    body: JSON.stringify({
-      status: payload.action,
-      feedback: payload.notes
-    })
+  const url = baseUrl
+    ? `${baseUrl}/doctor/review/${payload.diagnosis_id}`
+    : `/api/doctor/review/${payload.diagnosis_id}`
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...doctorAuthHeaders() },
+    body: JSON.stringify({ status: payload.action, feedback: payload.notes }),
   })
-  if (!res.ok) throw new Error(`Review failed: ${res.statusText}`)
+  if (!res.ok) throw new Error(`Review failed: ${res.status}`)
   return res.json()
 }

@@ -19,7 +19,10 @@ interface SymptomStore {
 }
 
 const generateSessionId = (): string => {
-  return "session_" + Math.random().toString(36).substr(2, 9) + "_" + Date.now()
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return "session_" + crypto.randomUUID()
+  }
+  return "session_" + Date.now().toString(36) + "_" + Math.random().toString(36).substring(2)
 }
 
 export const useSymptomStore = create<SymptomStore>()(
