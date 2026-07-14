@@ -7,9 +7,11 @@ node_modules/
 .next/**
 out/
 
-# Env
+# Env — ignore real env files but keep the example
 .env.local
-.env*
+.env*.local
+.env.development
+.env.production
 
 # Logs
 *.log

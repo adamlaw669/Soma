@@ -206,3 +206,27 @@ __marimo__/
 
 frontend/node_modules/
 node_modules/
+
+# Database files — never commit real data
+*.db
+*.sqlite
+*.sqlite3
+
+# Test artifacts
+backend/test_report.pdf
+
+# Local environment overrides
+frontend/.env.local
+.env.local
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+
+# Alt package manager lockfile — this project uses npm
+frontend/pnpm-lock.yaml
+frontend/yarn.lock
