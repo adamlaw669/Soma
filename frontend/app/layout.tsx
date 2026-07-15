@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
+import { Plus_Jakarta_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ErrorBoundary } from "../components/error-boundary"
@@ -9,31 +8,27 @@ import { Toaster } from "../components/ui/toaster"
 import { ThemeProvider } from "../components/theme-provider"
 import "./globals.css"
 
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap",
+})
+
 export const metadata: Metadata = {
-  title: "Soma - From Symptoms to Clarity, Instantly",
+  title: "Soma — AI symptom checker",
   description:
-    "AI-powered symptom checker for quick health insights. Not a substitute for professional medical advice.",
-  generator: "Lawal Adam",
-  keywords: ["health", "symptoms", "AI", "diagnosis", "medical", "healthcare"],
-  authors: [{ name: "Soma Health" }],
-  creator: "Soma Health",
-  publisher: "Soma Health",
-  robots: {
-    index: true,
-    follow: true,
-  },
+    "AI symptom checker. Not a substitute for professional medical advice.",
+  robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://soma-health.vercel.app",
-    title: "Soma - AI Symptom Checker",
-    description: "Fast, simple, smart diagnosis with AI-powered health insights",
+    title: "Soma",
+    description: "AI symptom checker.",
     siteName: "Soma",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Soma - AI Symptom Checker",
-    description: "Fast, simple, smart diagnosis with AI-powered health insights",
+    title: "Soma",
+    description: "AI symptom checker.",
   },
 }
 
@@ -43,9 +38,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${jakarta.variable} font-sans`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <ErrorBoundary>
             <Suspense fallback={null}>{children}</Suspense>
             <Toaster />

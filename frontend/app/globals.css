@@ -1,84 +1,60 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * Soma design system
+ *
+ * Direction: sleek + minimal, editorial typography, white bg + slate text
+ * with one teal accent. Consistent with the aesthetic of Adam's other data
+ * projects. Not clinical-heavy; not marketing-loud.
+ */
 
 :root {
-  /* Updated to dark clinical theme as default */
-  --background: oklch(0.11 0.005 258); /* Dark gray #111827 */
-  --foreground: oklch(0.95 0.005 258); /* Soft white */
-  --card: oklch(0.15 0.005 258); /* Slightly lighter dark */
-  --card-foreground: oklch(0.95 0.005 258);
-  --popover: oklch(0.15 0.005 258);
-  --popover-foreground: oklch(0.95 0.005 258);
-  --primary: oklch(0.55 0.15 162); /* Emerald-600 #059669 */
-  --primary-foreground: oklch(0.95 0.005 258);
-  --secondary: oklch(0.65 0.17 195); /* Cyan-500 #06B6D4 */
-  --secondary-foreground: oklch(0.11 0.005 258);
-  --muted: oklch(0.2 0.005 258);
-  --muted-foreground: oklch(0.7 0.005 258);
-  --accent: oklch(0.65 0.17 195); /* Cyan accent */
-  --accent-foreground: oklch(0.11 0.005 258);
-  --destructive: oklch(0.65 0.25 15); /* Rose for warnings */
-  --destructive-foreground: oklch(0.95 0.005 258);
-  --border: oklch(0.25 0.005 258); /* Subtle border */
-  --input: oklch(0.2 0.005 258);
-  --ring: oklch(0.55 0.15 162);
-  --chart-1: oklch(0.55 0.15 162); /* Emerald */
-  --chart-2: oklch(0.65 0.17 195); /* Cyan */
-  --chart-3: oklch(0.65 0.25 15); /* Rose */
-  --chart-4: oklch(0.6 0.2 60); /* Amber */
-  --chart-5: oklch(0.55 0.2 280); /* Purple */
-  --radius: 0.75rem;
-  --sidebar: oklch(0.15 0.005 258);
-  --sidebar-foreground: oklch(0.95 0.005 258);
-  --sidebar-primary: oklch(0.55 0.15 162);
-  --sidebar-primary-foreground: oklch(0.95 0.005 258);
-  --sidebar-accent: oklch(0.2 0.005 258);
-  --sidebar-accent-foreground: oklch(0.95 0.005 258);
-  --sidebar-border: oklch(0.25 0.005 258);
-  --sidebar-ring: oklch(0.55 0.15 162);
-}
-
-.light {
-  /* Light theme as alternative */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.35 0.01 258);
-  --card: oklch(0.96 0.005 258);
-  --card-foreground: oklch(0.35 0.01 258);
+  /* Surfaces */
+  --background: oklch(1 0 0);                    /* #FFFFFF */
+  --foreground: oklch(0.208 0.042 265.755);      /* slate-900 #0F172A */
+  --card: oklch(1 0 0);                          /* white */
+  --card-foreground: oklch(0.208 0.042 265.755); /* slate-900 */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.35 0.01 258);
-  --primary: oklch(0.55 0.15 162);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.65 0.17 195);
-  --secondary-foreground: oklch(0.11 0.005 258);
-  --muted: oklch(0.96 0.005 258);
-  --muted-foreground: oklch(0.45 0.01 258);
-  --accent: oklch(0.65 0.17 195);
-  --accent-foreground: oklch(0.11 0.005 258);
-  --destructive: oklch(0.55 0.25 15);
+  --popover-foreground: oklch(0.208 0.042 265.755);
+
+  /* Accent — teal */
+  --primary: oklch(0.511 0.096 186.391);         /* teal-700 #0F766E */
+  --primary-foreground: oklch(1 0 0);            /* white on teal */
+  --primary-tint: oklch(0.511 0.096 186.391 / 0.05); /* 5% teal for selected cards */
+
+  /* Secondary — slate-100 as a soft surface for chips/buttons */
+  --secondary: oklch(0.968 0.007 247.896);       /* slate-100 #F1F5F9 */
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+
+  /* Muted — labels, meta text */
+  --muted: oklch(0.968 0.007 247.896);           /* slate-100 */
+  --muted-foreground: oklch(0.554 0.046 257.417);/* slate-500 #64748B */
+
+  /* Accent (reuse teal) */
+  --accent: oklch(0.968 0.007 247.896);          /* slate-100 for accent hover */
+  --accent-foreground: oklch(0.208 0.042 265.755);
+
+  --destructive: oklch(0.577 0.245 27.325);      /* red-600 for warnings */
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.92 0.005 258);
-  --input: oklch(0.96 0.005 258);
-  --ring: oklch(0.55 0.15 162);
-  --chart-1: oklch(0.55 0.15 162);
-  --chart-2: oklch(0.65 0.17 195);
-  --chart-3: oklch(0.65 0.25 15);
-  --chart-4: oklch(0.6 0.2 60);
-  --chart-5: oklch(0.55 0.2 280);
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.35 0.01 258);
-  --sidebar-primary: oklch(0.55 0.15 162);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0.005 258);
-  --sidebar-accent-foreground: oklch(0.35 0.01 258);
-  --sidebar-border: oklch(0.92 0.005 258);
-  --sidebar-ring: oklch(0.55 0.15 162);
+
+  /* Structure */
+  --border: oklch(0.929 0.013 255.508);          /* slate-200 #E2E8F0 */
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.511 0.096 186.391);            /* teal focus */
+
+  /* Chart colors — teal-forward palette for prediction distribution */
+  --chart-1: oklch(0.511 0.096 186.391);         /* teal-700 */
+  --chart-2: oklch(0.704 0.113 189.641);         /* teal-500 */
+  --chart-3: oklch(0.827 0.087 187.898);         /* teal-300 */
+  --chart-4: oklch(0.554 0.046 257.417);         /* slate-500 */
+  --chart-5: oklch(0.769 0.188 70.08);           /* amber-500, for outliers */
+
+  --radius: 0.625rem;                            /* 10px, matches Sabi */
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -107,69 +83,55 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11"; /* stylistic alternates for a cleaner look */
   }
 
-  /* Enhanced smooth scrolling and animations */
+  /* Editorial headings — tight tracking on display sizes matches the Sabi feel */
+  h1, h2, h3 {
+    letter-spacing: -0.025em;
+  }
+  h1 {
+    letter-spacing: -0.03em;
+  }
+
   html {
     scroll-behavior: smooth;
   }
 
-  /* Enhanced focus visibility for accessibility */
   *:focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
   }
 
-  /* Custom scrollbar for dark theme */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-muted;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/50;
-  }
-
-  /* Reduced motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
   }
+}
 
-  /* Added glow effects for neon-style elements */
-  .glow-emerald {
-    box-shadow: 0 0 20px oklch(0.55 0.15 162 / 0.3);
+/*
+ * Utilities
+ */
+
+@layer utilities {
+  /* Small uppercase label — for section labels like TRACK A, PICK A PERSON */
+  .label-eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground;
   }
 
-  .glow-cyan {
-    box-shadow: 0 0 20px oklch(0.65 0.17 195 / 0.3);
+  /* Selected-card tint — 5% teal, matches Sabi's active-track pattern */
+  .bg-primary-tint {
+    background-color: var(--primary-tint);
   }
 }
