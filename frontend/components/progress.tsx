@@ -1,5 +1,3 @@
-import { Progress } from "../components/ui/progress"
-
 interface ProgressBarProps {
   current: number
   total: number
@@ -7,20 +5,21 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ current, total, className }: ProgressBarProps) {
-  const percentage = Math.round((current / total) * 100)
+  const percentage = Math.min(100, Math.round((current / total) * 100))
+  const currentDisplay = Math.min(current, total).toString().padStart(2, "0")
+  const totalDisplay = total.toString().padStart(2, "0")
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-        <span>Progress</span>
-        <span>{percentage}%</span>
+      <div className="flex items-center justify-between">
+        <span className="label-eyebrow">Question {currentDisplay} / {totalDisplay}</span>
+        <span className="text-xs tabular-nums text-muted-foreground">{percentage}%</span>
       </div>
-      <Progress value={percentage} className="h-2" />
-      <div className="flex items-center justify-between text-xs text-muted-foreground mt-1">
-        <span>
-          {current} of {total} questions
-        </span>
-        <span>{total - current} remaining</span>
+      <div className="mt-3 h-px w-full bg-border">
+        <div
+          className="h-px bg-primary transition-all duration-300 ease-out"
+          style={{ width: `${percentage}%` }}
+        />
       </div>
     </div>
   )

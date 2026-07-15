@@ -1,11 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Thermometer } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
 
 interface VitalsInputProps {
   onTemperatureChange: (temperature: number | undefined) => void
@@ -13,8 +11,14 @@ interface VitalsInputProps {
   initialTemperature?: number
 }
 
-export function VitalsInput({ onTemperatureChange, onContinue, initialTemperature }: VitalsInputProps) {
-  const [temperature, setTemperature] = useState<string>(initialTemperature?.toString() || "")
+export function VitalsInput({
+  onTemperatureChange,
+  onContinue,
+  initialTemperature,
+}: VitalsInputProps) {
+  const [temperature, setTemperature] = useState<string>(
+    initialTemperature?.toString() ?? "",
+  )
   const [error, setError] = useState<string>("")
 
   const handleTemperatureChange = (value: string) => {
@@ -28,59 +32,62 @@ export function VitalsInput({ onTemperatureChange, onContinue, initialTemperatur
 
     const temp = Number.parseFloat(value)
     if (isNaN(temp)) {
-      setError("Please enter a valid number")
+      setError("Please enter a valid number.")
       return
     }
-
     if (temp < 34 || temp > 43) {
-      setError("Temperature should be between 34°C and 43°C")
+      setError("Temperature should be between 34°C and 43°C.")
       return
     }
 
     onTemperatureChange(temp)
   }
 
-  const handleContinue = () => {
-    if (temperature && error) {
-      return
-    }
-    onContinue()
-  }
-
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-4">
-          <Thermometer className="h-6 w-6 text-primary" />
-        </div>
-        <CardTitle>Temperature Check</CardTitle>
-        <CardDescription>Since you have a fever, please enter your current body temperature if known</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="temperature">Temperature (°C)</Label>
+    <div>
+      <span className="label-eyebrow">Vitals</span>
+      <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+        What's your temperature?
+      </h2>
+      <p className="mt-3 text-base text-muted-foreground">
+        Since you have a fever, add your temperature if you have a reading. Skip
+        if you don't.
+      </p>
+
+      <div className="mt-10 max-w-xs">
+        <Label htmlFor="temperature" className="text-sm">
+          Temperature
+        </Label>
+        <div className="mt-2 flex items-center gap-2">
           <Input
             id="temperature"
             type="number"
+            inputMode="decimal"
             placeholder="37.0"
             value={temperature}
             onChange={(e) => handleTemperatureChange(e.target.value)}
             min="34"
             max="43"
             step="0.1"
+            className="h-12 text-base"
           />
-          {error && <p className="text-sm text-destructive">{error}</p>}
-          <p className="text-xs text-muted-foreground">Normal body temperature is around 37°C (98.6°F)</p>
+          <span className="text-sm text-muted-foreground">°C</span>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => handleContinue()} className="flex-1">
-            Skip
-          </Button>
-          <Button onClick={handleContinue} disabled={!!error} className="flex-1">
-            Continue
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        {error ? (
+          <p className="mt-2 text-sm text-destructive">{error}</p>
+        ) : (
+          <p className="mt-2 text-xs text-muted-foreground">Normal is around 37°C.</p>
+        )}
+      </div>
+
+      <div className="mt-10 flex gap-3">
+        <Button variant="outline" size="lg" onClick={onContinue}>
+          Skip
+        </Button>
+        <Button size="lg" onClick={onContinue} disabled={!!error}>
+          Continue
+        </Button>
+      </div>
+    </div>
   )
 }
