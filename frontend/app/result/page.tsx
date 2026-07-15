@@ -2,22 +2,28 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { NavBar } from "../../components/navbar"
-import { Footer } from "../../components/footer"
-import { PredictionPanel } from "../../components/prediction-panel"
-import { ConfidenceChart } from "../../components/confidence-chart"
-import { DiseaseInfoCard } from "../../components/disease-info-card"
-import { Button } from "../../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
-import { Skeleton } from "../../components/ui/skeleton"
-import { Alert, AlertDescription } from "../../components/ui/alert"
-import { useSymptomStore } from "../../lib/store"
-import { predictSymptoms, getDiseaseInfo, logEvent, generateReport, getRecentReportsFromLocal, saveReportToLocalStorage } from "../../lib/api"
-import type { PredictResponse, Report}  from "../../lib/types"
-import { RotateCcw, Share2, Calendar, AlertTriangle } from "lucide-react"
-import { useToast } from "../../hooks/use-toast"
-import { ReportModal } from "../../components/report-modal" 
-import { ReportView } from "../../components/report-view"
+import Link from "next/link"
+import { NavBar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { PredictionPanel } from "@/components/prediction-panel"
+import { ConfidenceChart } from "@/components/confidence-chart"
+import { DiseaseInfoCard } from "@/components/disease-info-card"
+import { Button } from "@/components/ui/button"
+import { LoadingSpinner } from "@/components/loading-spinner"
+import { useSymptomStore } from "@/lib/store"
+import {
+  predictSymptoms,
+  getDiseaseInfo,
+  logEvent,
+  generateReport,
+  getRecentReportsFromLocal,
+  saveReportToLocalStorage,
+} from "@/lib/api"
+import type { PredictResponse, Report } from "@/lib/types"
+import { RotateCcw, Share2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { ReportModal } from "@/components/report-modal"
+import { ReportView } from "@/components/report-view"
 
 export default function ResultPage() {
   const router = useRouter()
@@ -62,12 +68,10 @@ export default function ResultPage() {
           triage: result.triage,
         })
 
-        // Fetch disease information
         const labels = result.distribution.slice(0, 3).map((d) => d.label)
         const info = await getDiseaseInfo(labels)
         setDiseaseInfo(info)
 
-        // Generate and persist report
         const recent = getRecentReportsFromLocal()
         const gen = await generateReport({
           predict_response: result,
@@ -82,9 +86,8 @@ export default function ResultPage() {
         setReport(gen.report)
         saveReportToLocalStorage(gen.report)
         setShowReportModal(true)
-        toast({ title: "Report generated", description: "Sent to a doctor for review." })
+        toast({ title: "Report saved", description: "Sent to a doctor for review." })
 
-        // Save diagnosis to local history (Zustand + persisted)
         addDiagnosisToHistory(result)
       } catch (err) {
         console.error("Prediction error:", err)
@@ -105,158 +108,107 @@ export default function ResultPage() {
 
   const handleShare = async () => {
     if (!prediction) return
-
     try {
       await navigator.share({
-        title: "Soma Health Check Results",
-        text: `My symptom check suggests ${prediction.top_prediction.label} with ${Math.round(
+        title: "Soma results",
+        text: `My symptom check suggests ${prediction.top_prediction.label} (${Math.round(
           prediction.top_prediction.probability * 100,
-        )}% confidence.`,
+        )}%).`,
         url: window.location.href,
       })
       logEvent("results_shared")
-    } catch (err) {
-      // Fallback to clipboard
-      navigator.clipboard.writeText(window.location.href)
-      toast({
-        title: "Link copied",
-        description: "Results link copied to clipboard",
-      })
+    } catch {
+      await navigator.clipboard?.writeText(window.location.href)
+      toast({ title: "Link copied", description: "Results link on your clipboard." })
     }
-  }
-
-  const handleBookTelehealth = () => {
-    toast({
-      title: "Feature coming soon",
-      description: "Telehealth booking will be available in a future update",
-    })
-    logEvent("telehealth_booking_attempted")
   }
 
   const renderReportForModal = () => (report ? <ReportView report={report} /> : <></>)
 
-  if (!session) {
-    return null // Will redirect
-  }
+  if (!session) return null
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <NavBar />
-        <main className="flex-1 p-4">
-          <div className="mx-auto max-w-4xl space-y-6">
-            <div className="text-center">
-              <Skeleton className="h-8 w-64 mx-auto mb-2" />
-              <Skeleton className="h-4 w-48 mx-auto" />
-            </div>
-            <div className="grid gap-6 lg:grid-cols-2">
-              <Skeleton className="h-64" />
-              <Skeleton className="h-64" />
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <NavBar />
-        <main className="flex-1 flex items-center justify-center p-4">
-          <Card className="w-full max-w-md mx-auto">
-            <CardHeader className="text-center">
-              <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
-              <CardTitle>Unable to Generate Results</CardTitle>
-              <CardDescription>We encountered an error processing your symptoms</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Alert>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-              <div className="flex gap-2">
-                <Button onClick={() => window.location.reload()} className="flex-1">
-                  Try Again
-                </Button>
-                <Button onClick={handleRestart} variant="outline" className="flex-1 bg-transparent">
-                  Start Over
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </main>
-        <Footer />
-      </div>
-    )
-  }
-
-  if (!prediction) {
-    return null
-  }
-
-  const topDiseaseInfo = diseaseInfo?.[prediction.top_prediction.label]
+  const topDiseaseInfo =
+    prediction && diseaseInfo ? diseaseInfo[prediction.top_prediction.label] : null
 
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
-      <main className="flex-1 p-4">
-        <div className="mx-auto max-w-4xl space-y-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-foreground">Your Health Insights</h1>
-            <p className="text-muted-foreground mt-2">Based on your reported symptoms</p>
-          </div>
+      <main className="flex-1">
+        <div className="mx-auto max-w-3xl px-6 pb-24 pt-16">
+          {loading ? (
+            <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
+              <LoadingSpinner size="lg" />
+              <p className="text-sm text-muted-foreground">Running the classifier…</p>
+            </div>
+          ) : error ? (
+            <div>
+              <span className="label-eyebrow text-destructive">Error</span>
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                We couldn't generate results.
+              </h1>
+              <p className="mt-3 text-base text-muted-foreground">{error}</p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Button size="lg" onClick={() => window.location.reload()}>
+                  Try again
+                </Button>
+                <Button variant="outline" size="lg" onClick={handleRestart}>
+                  Start over
+                </Button>
+              </div>
+            </div>
+          ) : prediction ? (
+            <>
+              <PredictionPanel prediction={prediction} />
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            <PredictionPanel prediction={prediction} />
-            <ConfidenceChart distribution={prediction.distribution} />
-          </div>
+              <div className="mt-16 border-t border-border pt-14">
+                <ConfidenceChart distribution={prediction.distribution} />
+              </div>
 
-          {prediction.explanations && prediction.explanations.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Why This Prediction?</CardTitle>
-                <CardDescription>AI reasoning behind the assessment</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {prediction.explanations.map((explanation, index) => (
-                    <li key={index} className="flex items-start space-x-2 text-sm">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-                      <span className="text-muted-foreground">{explanation}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
+              {prediction.explanations && prediction.explanations.length > 0 && (
+                <div className="mt-16 border-t border-border pt-14">
+                  <span className="label-eyebrow">Why this prediction</span>
+                  <ul className="mt-6 space-y-3">
+                    {prediction.explanations.map((explanation, i) => (
+                      <li key={i} className="flex gap-3 text-sm leading-6">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-foreground/40" />
+                        <span className="text-muted-foreground">{explanation}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-          {topDiseaseInfo && <DiseaseInfoCard diseaseInfo={topDiseaseInfo} />}
+              {topDiseaseInfo && (
+                <div className="mt-16 border-t border-border pt-14">
+                  <span className="label-eyebrow">About this condition</span>
+                  <div className="mt-6">
+                    <DiseaseInfoCard diseaseInfo={topDiseaseInfo} />
+                  </div>
+                </div>
+              )}
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={handleRestart} variant="outline" className="bg-transparent">
-              <RotateCcw className="mr-2 h-4 w-4" />
-              Start New Check
-            </Button>
-            <Button onClick={handleShare} variant="outline" className="bg-transparent">
-              <Share2 className="mr-2 h-4 w-4" />
-              Share Results
-            </Button>
-            <Button onClick={handleBookTelehealth} className="bg-accent hover:bg-accent/90">
-              <Calendar className="mr-2 h-4 w-4" />
-              Book Telehealth
-            </Button>
-          </div>
+              <div className="mt-16 flex flex-wrap gap-3 border-t border-border pt-10">
+                <Button size="lg" onClick={handleRestart}>
+                  <RotateCcw className="h-4 w-4" />
+                  New check
+                </Button>
+                <Button size="lg" variant="outline" onClick={handleShare}>
+                  <Share2 className="h-4 w-4" />
+                  Share
+                </Button>
+                {report && (
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href={`/report/${report.id}`}>View full report</Link>
+                  </Button>
+                )}
+              </div>
 
-          <Alert>
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Important:</strong> This tool provides informational guidance only and is not a substitute for
-              professional medical advice, diagnosis, or treatment. Always consult a healthcare professional for medical
-              concerns.
-            </AlertDescription>
-          </Alert>
+              <p className="mt-10 max-w-xl text-xs leading-5 text-muted-foreground">
+                Not medical advice. This tool provides informational guidance only —
+                always consult a qualified healthcare provider for medical concerns.
+              </p>
+            </>
+          ) : null}
         </div>
       </main>
       <Footer />
