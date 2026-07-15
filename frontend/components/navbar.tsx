@@ -2,16 +2,18 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { SomaLogo } from "@/components/soma-logo"
 
 export function NavBar() {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
-            S
-          </span>
-          <span className="text-lg font-semibold tracking-tight">Soma</span>
+        <Link
+          href="/"
+          className="text-primary transition-opacity hover:opacity-80"
+          aria-label="Soma home"
+        >
+          <SomaLogo size={22} wordmark />
         </Link>
 
         <nav className="flex items-center gap-4 sm:gap-6">
